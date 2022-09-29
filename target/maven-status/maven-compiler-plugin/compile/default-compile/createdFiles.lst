@@ -1,0 +1,14 @@
+org\troy\webapp\jsf3\primefaces\repositories\ProductoRepository.class
+org\troy\webapp\jsf3\primefaces\controllers\LogoutController.class
+org\troy\webapp\jsf3\primefaces\controllers\LenguajeController.class
+org\troy\webapp\jsf3\primefaces\converters\CategoriaConverter.class
+org\troy\webapp\jsf3\primefaces\ProduceResources.class
+org\troy\webapp\jsf3\primefaces\repositories\CrudRepository.class
+org\troy\webapp\jsf3\primefaces\ProduceEntitiManager.class
+org\troy\webapp\jsf3\primefaces\entitys\Categoria.class
+org\troy\webapp\jsf3\primefaces\service\ProductoService.class
+org\troy\webapp\jsf3\primefaces\repositories\ProductoRepositoryImpl.class
+org\troy\webapp\jsf3\primefaces\entitys\Producto.class
+org\troy\webapp\jsf3\primefaces\repositories\CategoriaRepositoryImpl.class
+org\troy\webapp\jsf3\primefaces\service\ProductoServiceImpl.class
+org\troy\webapp\jsf3\primefaces\controllers\ProductoController.class

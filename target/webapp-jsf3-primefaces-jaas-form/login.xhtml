@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:p="http://primefaces.org/ui"
+             template="/WEB-INF/layouts/main.xhtml">
+    <ui:define name="content">
+        <p:panel header="login" rendered="#{p:ifNoneGranted('ADMIN,USER')}">
+        <form id="formLogin" action="j_security_check" method="post">
+            <div class="p-field p-grid">
+                <p:outputLabel value="Username" for="j_username" class="p-col-fixed"
+                               style="width:200px"/>
+                <div class="p-col">
+                    <p:inputText id="j_username" />
+                </div>
+            </div>
+            <div class="p-field p-grid">
+                <p:outputLabel value="Password" for="j_password" class="p-col-fixed"
+                               style="width:200px"/>
+                <div class="p-col">
+                    <p:inputText type="password" id="j_password" />
+                </div>
+            </div>
+            <div class="p-col">
+                <p:button onclick="submit()"
+                        value="Login"
+                        class="ui-button-outlined ui-button-success"/>
+            </div>
+        </form>
+        </p:panel>
+        <p:panel header="Bienvenido ya haz iniciado sesion" rendered="#{not empty p:userPrincipal()}">
+            <p:linkButton outcome="index" value="volver" styleClass="p-my-2" />
+        </p:panel>
+    </ui:define>
+</ui:composition>

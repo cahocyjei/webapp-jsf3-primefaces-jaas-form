@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:p="http://primefaces.org/ui"
+             template="/WEB-INF/layouts/main.xhtml">
+    <ui:define name="content">
+    <p:card>
+        <f:facet name="title">
+            <h:outputText value="#{titulo}"/>
+        </f:facet>
+        <p:divider />
+        <h:form id="crearForm" rendered="#{p:ifGranted('ADMIN')}">
+            <p:commandButton value="#{msg['producto.boton.crear']}" onclick="PF('dlg1').show()"
+                             class="p-my-2"
+                             icon="pi pi-plus-circle">
+                <p:resetInput target="formProducto" />
+            </p:commandButton>
+        </h:form>
+        <h:outputText value="No existen elementos en la base de datos" rendered="#{empty productoController.listado}"/>
+        <h:form rendered="#{p:ifAnyGranted({'ADMIN', 'USER'})}">
+            <div class="p-field p-grid p-my-2">
+                <label class="p-col-fixed" style="maxwidth:20px" for="textoBuscar">Buscar</label>
+                <div class="p-col">
+                    <p:inputText id="textoBuscar" class="p-col" value="#{productoController.textoBuscar}"
+                                 placeholder="Buscar">
+                        <p:ajax listener="#{productoController.buscar}" event="keyup" update="mostrar tabla"/>
+                    </p:inputText>
+                </div>
+                <div class="p-col">
+                    <h:outputText  value="#{productoController.textoBuscar}" id="mostrar" />
+                </div>
+            </div>
+        </h:form>
+        <p:dataTable value="#{productoController.listado}" var="prod"
+                     rendered="#{not empty productoController.listado}"
+                     style="max-width:65%" id="tabla"
+                     rows="10"
+                     paginator="true" paginatorPosition="both"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                     rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+            <p:column headerText="#{msg['producto.id']}">
+                <h:outputText value="#{prod.id}"/>
+            </p:column>
+            <p:column headerText="#{msg['producto.nombre']}">
+                <h:outputText value="#{prod.nombre}"/>
+            </p:column>
+            <p:column headerText="#{msg['producto.precio']}">
+                <h:outputText value="#{prod.precio}"/>
+            </p:column>
+            <p:column headerText="#{msg['producto.categoria']}">
+                <h:outputText value="#{prod.categoria.nombre}"/>
+            </p:column>
+            <p:column headerText="#{msg['producto.fechaRegistro']}">
+                <h:outputText value="#{prod.fechaRegistro}">
+                    <f:convertDateTime type="localDate" pattermd="dd/MM/yyyy"/>
+                </h:outputText>
+            </p:column>
+            <p:column headerText="#{msg['producto.boton.editar']}" rendered="#{p:ifGranted('ADMIN')}">
+                <h:form id="formEditar">
+                    <p:commandButton value="#{msg['producto.boton.editar']}" action="#{productoController.editar(prod.id)}"
+                                   class="ui-button-success"
+                                     icon="pi pi-save"
+                                     onclick="PF('dlg1').show()" update="formProducto"/>
+                </h:form>
+            </p:column>
+            <p:column headerText="#{msg['producto.boton.eliminar']}" rendered="#{p:ifGranted('ADMIN')}">
+                <h:form id="formEliminar">
+                    <p:commandButton value="#{msg['producto.boton.eliminar']}" action="#{productoController.eliminar(prod)}"
+                                   class="ui-button-danger" update="tabla" icon="pi pi-trash">
+                        <p:resetInput target="formProducto" />
+                    </p:commandButton>
+                </h:form>
+            </p:column>
+        </p:dataTable>
+        <p:dialog header="#{productoController.producto.id>0?msg['form.texto.editar']:msg['form.texto.crear']}" rendered="#{p:ifGranted('ADMIN')}" widgetVar="dlg1" minHeight="200" class="w-auto" showEffect="fade" modal="true">
+            <p:ajax event="close" listener="#{productoController.cerrarDialogo}" update="formProducto" />
+            <ui:include src="form.xhtml" />
+        </p:dialog>
+    </p:card>
+    </ui:define>
+</ui:composition>
